@@ -35,5 +35,10 @@ public class Produto {
 	
 	@NotNull(message = "O atributo data é obrigatório")
 	private Date data_lancamento;
+
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
