@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-
 import com.generation.gamesstore.model.Produto;
+import com.generation.gamesstore.repository.CategoriaRepository;
 import com.generation.gamesstore.repository.ProdutoRepository;
 
 import jakarta.validation.Valid;
@@ -26,11 +26,15 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/produtos")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class PrudutoController {
+public class ProdutoController {
 
 	
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
+	
 	@GetMapping
 	public ResponseEntity<List<Produto>> getAll(){
 		return ResponseEntity.ok(produtoRepository.findAll());
@@ -43,11 +47,10 @@ public class PrudutoController {
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());	
 	}
 	
-	 @GetMapping("/produtos/{nome}")
-	    public ResponseEntity<Object> getBynome(@PathVariable 
+	 @GetMapping("/nome/{nome}")
+	    public ResponseEntity<List<Produto>> getByNome(@PathVariable 
 	    String nome){
-	        return ResponseEntity.ok(produtoRepository
-	            .findAllByDescricaoContainingIgnoreCase(nome));
+	        return ResponseEntity.ok(produtoRepository.findAllByNomeContainingIgnoreCase(nome));
 	    }
 	
 	 @PostMapping
@@ -59,7 +62,8 @@ public class PrudutoController {
 	 @PutMapping
 		public ResponseEntity<Produto> put (@Valid @RequestBody Produto produto){
 			return produtoRepository.findById(produto.getId())
-					.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(produtoRepository.save(produto)))
+					.map(resposta -> ResponseEntity.status(HttpStatus.OK)
+							.body(produtoRepository.save(produto)))
 					.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());	
 		}
 	 

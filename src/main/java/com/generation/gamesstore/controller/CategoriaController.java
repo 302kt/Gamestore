@@ -25,7 +25,6 @@ import com.generation.gamesstore.repository.ProdutoRepository;
 
 import jakarta.validation.Valid;
 
-
 @RestController
 @RequestMapping("/categorias")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -33,17 +32,15 @@ public class CategoriaController {
 
 	@Autowired
 		private CategoriaRepository categoriaRepository;
-	 @Autowired
-	    private ProdutoRepository produtoRepository;
-	    
+
 	    @GetMapping
-	    public ResponseEntity<List<Produto>> getAll(){
-	        return ResponseEntity.ok(produtoRepository.findAll());
+	    public ResponseEntity<List<Categoria>> getAll(){
+	        return ResponseEntity.ok(categoriaRepository.findAll());
 	    }
 	   
 	    @GetMapping("/{id}")
-	    public ResponseEntity<Produto> getById(@PathVariable Long id){
-	        return produtoRepository.findById(id)
+	    public ResponseEntity<Categoria> getById(@PathVariable Long id){
+	        return categoriaRepository.findById(id)
 	            .map(resposta -> ResponseEntity.ok(resposta))
 	            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	    }
@@ -77,4 +74,6 @@ public class CategoriaController {
 		
 			categoriaRepository.deleteById(id);
 		}
+		
+		
 }
